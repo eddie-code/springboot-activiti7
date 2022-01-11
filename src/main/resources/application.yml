@@ -24,3 +24,9 @@ spring:
     host: ${REDIS_HOST:localhost}
     port: ${REDIS_PORT:6379}
     timeout: 5000
+  # 日志的相关配置
+  activiti:
+    history-level: full
+    db-history-used: true
+    # 自动部署验证设置:true-开启（默认）、false-关闭
+    check-process-definitions: false
