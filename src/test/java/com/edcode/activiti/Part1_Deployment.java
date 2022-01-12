@@ -32,7 +32,7 @@ public class Part1_Deployment {
         Deployment deployment = repositoryService.createDeployment()
                 .addClasspathResource(filename)
 //                .addClasspathResource(pngname)
-                .name("流程部署测试BPMN_v2")
+                .name("流程部署测试BPMN_V2")
                 .deploy();
         System.out.println(deployment.getName());
     }
