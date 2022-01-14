@@ -29,7 +29,7 @@ public class Part7_Gateway {
     @Test
     public void initProcessInstance() {
         ProcessInstance processInstance = runtimeService
-                .startProcessInstanceByKey("myProcess_Parallel");
+                .startProcessInstanceByKey("myProcess_Exclusive");
         System.out.println("流程实例ID：" + processInstance.getProcessDefinitionId());
     }
 
@@ -39,8 +39,10 @@ public class Part7_Gateway {
     @Test
     public void completeTask() {
         Map<String, Object> variables = new HashMap<>();
-        // bajie流程实例 5f2bec43-74fb-11ec-9372-5e879ca31830
-        taskService.complete("5f2bec43-74fb-11ec-9372-5e879ca31830");
+        // 请假 101
+        variables.put("day", "101");
+        // bajie流程实例 ce30fac7-7507-11ec-a00a-5e879ca31830
+        taskService.complete("ce30fac7-7507-11ec-a00a-5e879ca31830", variables);
         System.out.println("完成任务");
     }
 

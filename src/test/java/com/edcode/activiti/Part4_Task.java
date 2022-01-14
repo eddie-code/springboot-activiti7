@@ -37,7 +37,7 @@ public class Part4_Task {
     @Test
     public void getTasksByAssignee() {
         taskService.createTaskQuery()
-                .taskAssignee("wukong")
+                .taskAssignee("tangseng")
                 .list().forEach(task -> {
                     System.out.println("Id：" + task.getId());
                     System.out.println("Name：" + task.getName());

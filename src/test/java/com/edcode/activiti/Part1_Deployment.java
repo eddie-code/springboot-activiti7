@@ -27,12 +27,12 @@ public class Part1_Deployment {
      */
     @Test
     public void initDeploymentBPMN() {
-        String filename = "BPMN/Part7_Parallel.bpmn20.xml";
+        String filename = "BPMN/Part7_Exclusive.bpmn20.xml";
 //        String pngname="BPMN/Part1_Deployment.png";
         Deployment deployment = repositoryService.createDeployment()
                 .addClasspathResource(filename)
 //                .addClasspathResource(pngname)
-                .name("流程部署测试 - 并行网关")
+                .name("流程部署测试 - 排他网关")
                 .deploy();
         System.out.println(deployment.getName());
     }
@@ -65,6 +65,16 @@ public class Part1_Deployment {
             System.out.println("DeploymentTime：" + deployment.getDeploymentTime());
             System.out.println("Key：" + deployment.getKey() + "\n\r");
         });
+    }
+
+    /**
+     * 删除流程部署
+     */
+    @Test
+    public void deleteDeployments() {
+        String id = "267a1037-7506-11ec-8633-5e879ca31830";
+        repositoryService.deleteDeployment(id);
+        System.out.println("删除流程部署：" + id);
     }
 
 }
