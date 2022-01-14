@@ -35,12 +35,6 @@ public class Part3_ProcessInstance {
 
     /**
      * 获取流程实例列表
-     *
-     * --------流程实例------
-     * ProcessInstanceId：df08e9f8-73b9-11ec-8e8a-5e879ca31830
-     * ProcessDefinitionId：myProcess_Part1:1:d7652884-7388-11ec-b254-5e879ca31830
-     * isEndedfalse
-     * isSuspended：false
      */
     @Test
     public void getProcessInstances() {

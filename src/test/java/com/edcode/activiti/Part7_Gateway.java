@@ -29,7 +29,7 @@ public class Part7_Gateway {
     @Test
     public void initProcessInstance() {
         ProcessInstance processInstance = runtimeService
-                .startProcessInstanceByKey("myProcess_Exclusive");
+                .startProcessInstanceByKey("myProcess_Inclusive");
         System.out.println("流程实例ID：" + processInstance.getProcessDefinitionId());
     }
 
@@ -39,10 +39,16 @@ public class Part7_Gateway {
     @Test
     public void completeTask() {
         Map<String, Object> variables = new HashMap<>();
-        // 请假 101
-        variables.put("day", "101");
-        // bajie流程实例 ce30fac7-7507-11ec-a00a-5e879ca31830
-        taskService.complete("ce30fac7-7507-11ec-a00a-5e879ca31830", variables);
+        // 请假 1, 那么 wukong 和 shaseng 都能看到任务
+        variables.put("day", "1");
+        // bajie：0dddfea8-7518-11ec-a86a-5e879ca31830
+//        taskService.complete("0dddfea8-7518-11ec-a86a-5e879ca31830");
+        // 流程实例：0ddaf164-7518-11ec-a86a-5e879ca31830
+
+        // wukong：a9631394-7518-11ec-8c08-5e879ca31830
+        taskService.complete("a9631394-7518-11ec-8c08-5e879ca31830");
+        // shaseng：a9631396-7518-11ec-8c08-5e879ca31830
+        taskService.complete("a9631396-7518-11ec-8c08-5e879ca31830");
         System.out.println("完成任务");
     }
 
