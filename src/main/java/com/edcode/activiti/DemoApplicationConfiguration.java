@@ -33,13 +33,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 /**
- * https://github.com/Activiti/Activiti
  *
  * activiti-examples/activiti-api-basic-full-example-bean/src/main/java/org/activiti/examples/DemoApplicationConfiguration.java
  * 复制过来的
  *
+ * @author https://github.com/Activiti/Activiti
  */
-@Configuration
+//@Configuration
 public class DemoApplicationConfiguration {
 
     private Logger logger = LoggerFactory.getLogger(DemoApplicationConfiguration.class);
@@ -49,7 +49,7 @@ public class DemoApplicationConfiguration {
      * 结合上面，就是项目启动的时候，创建上面数组用户，存入内存里面
      * @return inMemoryUserDetailsManager
      */
-    @Bean
+//    @Bean
     public UserDetailsService myUserDetailsService() {
 
         InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
