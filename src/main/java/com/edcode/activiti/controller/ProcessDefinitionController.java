@@ -3,11 +3,13 @@ package com.edcode.activiti.controller;
 import com.edcode.activiti.util.AjaxResponse;
 import com.edcode.activiti.util.GlobalConfig;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.zip.ZipInputStream;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
@@ -147,6 +149,32 @@ public class ProcessDefinitionController {
           GlobalConfig.ResponseCode.ERROR.getCode(),
           "string部署流程失败",
           e.toString());
+    }
+  }
+
+  /**
+   * 获取流程定义XML
+   * @param response 获取前端的属性
+   * @param deploymentId 流程定义ID
+   * @param resourceName BPMN文件名称
+   */
+  @GetMapping(value = "/getDefinitionXML")
+  public void getProcessDefineXML(
+      HttpServletResponse response,
+      @RequestParam("deploymentId") String deploymentId,
+      @RequestParam("resourceName") String resourceName) {
+    try {
+      InputStream inputStream = repositoryService.getResourceAsStream(deploymentId,resourceName);
+      int count = inputStream.available();
+      byte[] bytes = new byte[count];
+      response.setContentType("text/xml");
+      OutputStream outputStream = response.getOutputStream();
+      while (inputStream.read(bytes) != -1) {
+        outputStream.write(bytes);
+      }
+      inputStream.close();
+    } catch (Exception e) {
+      e.toString();
     }
   }
 
