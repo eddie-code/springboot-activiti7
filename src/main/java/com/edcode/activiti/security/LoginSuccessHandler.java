@@ -28,17 +28,25 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
+  private final ObjectMapper objectMapper;
+
   @Override
   public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
       FilterChain chain, Authentication authentication) throws IOException, ServletException {
-
+    logger.info("登录成功1");
   }
 
   @Override
   public void onAuthenticationSuccess(HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse, Authentication authentication)
       throws IOException, ServletException {
+    logger.info("登录成功2");
     httpServletResponse.setContentType("application/json;charset=UTF-8");
-    httpServletResponse.getWriter().write("登录成功 loginSuccessHandler：" + authentication.getName());
+    httpServletResponse.getWriter().write(objectMapper.writeValueAsString(
+        AjaxResponse.AjaxData(
+            GlobalConfig.ResponseCode.SUCCESS.getCode(),
+            GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+            authentication.getName()
+        )));
   }
 }

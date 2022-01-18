@@ -28,6 +28,8 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
 
   private final Logger logger = LoggerFactory.getLogger(getClass());
 
+  private final ObjectMapper objectMapper;
+
   @Override
   public void onAuthenticationFailure(HttpServletRequest httpServletRequest,
       HttpServletResponse httpServletResponse, AuthenticationException e)
@@ -36,6 +38,11 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
     httpServletResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
     httpServletResponse.setContentType("application/json;charset=UTF-8");
 
-    httpServletResponse.getWriter().write("登录失败, 原因是：" + e.getMessage());
+    httpServletResponse.getWriter().write(objectMapper.writeValueAsString(
+        AjaxResponse.AjaxData(
+            GlobalConfig.ResponseCode.ERROR.getCode(),
+            GlobalConfig.ResponseCode.ERROR.getDesc(),
+            "登录失败："+e.getMessage()
+        )));
   }
 }
