@@ -178,4 +178,59 @@ public class ProcessDefinitionController {
     }
   }
 
+  /**
+   * 获取流程部署列表
+   * @return AjaxResponse
+   */
+  @GetMapping(value = "/getDeployments")
+  public AjaxResponse getDeployments() {
+    try {
+
+      List<HashMap<String, Object>> listMap= new ArrayList<>();
+
+      repositoryService.createDeploymentQuery().list().forEach(deployment -> {
+        HashMap<String, Object> hashMap = new HashMap<>(16);
+        hashMap.put("Id", deployment.getId());
+        hashMap.put("Name", deployment.getName());
+        // 部署时间
+        hashMap.put("DeploymentTime", deployment.getDeploymentTime());
+        listMap.add(hashMap);
+      });
+
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          listMap);
+
+    } catch (Exception e) {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "查询失败",
+          e.toString());
+    }
+  }
+
+  /**
+   * 删除流程定义
+   * @param pdID 流程定义ID
+   * @return AjaxResponse
+   */
+  @GetMapping(value = "/delDefinition")
+  public AjaxResponse delDefinition(@RequestParam("pdID") String pdID) {
+    try {
+
+      repositoryService.deleteDeployment(pdID, true);
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          null);
+
+    } catch (Exception e) {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "删除流程定义失败",
+          e.toString());
+    }
+  }
+
 }
