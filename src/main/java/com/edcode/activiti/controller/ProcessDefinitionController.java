@@ -121,4 +121,33 @@ public class ProcessDefinitionController {
 
   }
 
+  /**
+   * 部署BPMN字符
+   *  添加流程定义通过在线提交 BPMN 的 XML
+   * @param stringBPMN
+   * @return
+   */
+  @PostMapping(value = "/addDeploymentByString")
+  public AjaxResponse addDeploymentByString(
+      @RequestParam("stringBPMN") String stringBPMN,
+      @RequestParam("deploymentName")String deploymentName) {
+    try {
+      Deployment deployment = repositoryService.createDeployment()
+          .addString("CreateWithBPMNJS.bpmn",stringBPMN)
+          .name("不知道在哪显示的部署名称")
+          .deploy();
+
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          deployment.getId());
+
+    } catch (Exception e) {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "string部署流程失败",
+          e.toString());
+    }
+  }
+
 }
