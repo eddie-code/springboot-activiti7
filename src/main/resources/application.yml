@@ -30,3 +30,9 @@ spring:
     db-history-used: true
     # 自动部署验证设置:true-开启（默认）、false-关闭
     check-process-definitions: false
+
+# 开启Activiti的SQL日志
+#logging:
+#  level:
+#    org.activiti.engine.impl.persistence.entity: debug
+

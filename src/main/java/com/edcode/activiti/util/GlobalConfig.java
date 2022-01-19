@@ -10,6 +10,9 @@ import lombok.Getter;
  */
 public class GlobalConfig {
 
+  /**
+   * 开发阶段 / 测试阶段
+   */
   public static final Boolean Test = true;
 
   @Getter
