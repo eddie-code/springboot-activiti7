@@ -45,7 +45,7 @@ public class TaskController {
 
   private final ActivitiMapper mapper;
 
-  private static final String TEST_USER = "bajie";
+  private static final String TEST_USER = "wukong";
 
   /**
    * 获取我的代办任务
@@ -87,6 +87,43 @@ public class TaskController {
       return AjaxResponse.AjaxData(
           GlobalConfig.ResponseCode.ERROR.getCode(),
           "获取我的代办任务失败",
+          e.toString());
+    }
+  }
+
+  /**
+   * 完成待办任务
+   * @param taskID
+   * @return
+   */
+  @GetMapping(value = "/completeTask")
+  public AjaxResponse completeTask(@RequestParam("taskID") String taskID) {
+    try {
+      if (GlobalConfig.Test) {
+        securityUtil.logInAs(TEST_USER);
+      }
+
+      Task task = taskRuntime.task(taskID);
+
+      // 判断执行人是否null
+      if (task.getAssignee() == null) {
+        // 那么就是候选人, 就直接拾取任务
+        taskRuntime.claim(TaskPayloadBuilder.claim().withTaskId(task.getId()).build());
+      }
+      // 完成任务
+      taskRuntime.complete(TaskPayloadBuilder.complete().withTaskId(task.getId())
+          //.withVariable("num", "2")//执行环节设置变量
+          .build());
+
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          null);
+
+    } catch (Exception e) {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "完成任务 {"+taskID+"} 失败",
           e.toString());
     }
   }
