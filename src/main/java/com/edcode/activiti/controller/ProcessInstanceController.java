@@ -148,4 +148,36 @@ public class ProcessInstanceController {
     }
   }
 
+  /**
+   * 挂起流程实例
+   *    描述：在当前运行中的流程实例，用户暂时不想使用，又不想删除，所以只能挂起
+   * @param instanceID 实例ID
+   * @return AjaxResponse
+   */
+    @GetMapping(value = "/suspendInstance")
+  public AjaxResponse suspendInstance(@RequestParam("instanceID") String instanceID) {
+
+    try {
+      if (GlobalConfig.Test) {
+        securityUtil.logInAs(TEST_USER);
+      }
+
+      ProcessInstance processInstance = processRuntime.suspend(ProcessPayloadBuilder
+          .suspend()
+          .withProcessInstanceId(instanceID)
+          .build()
+      );
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          processInstance.getName());
+    }
+    catch(Exception e)
+    {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "挂起流程实例失败",
+          e.toString());
+    }
+  }
 }
