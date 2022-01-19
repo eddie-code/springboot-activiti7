@@ -241,4 +241,33 @@ public class ProcessInstanceController {
     }
   }
 
+  /**
+   * 获取流程参数
+   * @param instanceID 实例ID
+   * @return
+   */
+  @GetMapping(value = "/variables")
+  public AjaxResponse variables(@RequestParam("instanceID") String instanceID) {
+    try {
+      if (GlobalConfig.Test) {
+        securityUtil.logInAs(TEST_USER);
+      }
+      List<VariableInstance> variableInstance = processRuntime.variables(ProcessPayloadBuilder
+          .variables()
+          .withProcessInstanceId(instanceID)
+          .build());
+
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          variableInstance);
+    }
+    catch(Exception e) {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "获取流程参数失败",
+          e.toString());
+    }
+  }
+
 }
