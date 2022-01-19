@@ -172,8 +172,7 @@ public class ProcessInstanceController {
           GlobalConfig.ResponseCode.SUCCESS.getDesc(),
           processInstance.getName());
     }
-    catch(Exception e)
-    {
+    catch(Exception e) {
       return AjaxResponse.AjaxData(
           GlobalConfig.ResponseCode.ERROR.getCode(),
           "挂起流程实例失败",
@@ -183,7 +182,7 @@ public class ProcessInstanceController {
 
   /**
    * 激活流程实例
-   * @param instanceID
+   * @param instanceID 实例ID
    * @return
    */
   @GetMapping(value = "/resumeInstance")
@@ -204,11 +203,40 @@ public class ProcessInstanceController {
           GlobalConfig.ResponseCode.SUCCESS.getDesc(),
           processInstance.getName());
     }
-    catch(Exception e)
-    {
+    catch(Exception e) {
       return AjaxResponse.AjaxData(
           GlobalConfig.ResponseCode.ERROR.getCode(),
           "激活流程实例失败",
+          e.toString());
+    }
+  }
+
+  /**
+   * 删除流程实例
+   * @param instanceID 实例ID
+   * @return
+   */
+  @GetMapping(value = "/deleteInstance")
+  public AjaxResponse deleteInstance(@RequestParam("instanceID") String instanceID) {
+    try {
+      if (GlobalConfig.Test) {
+        securityUtil.logInAs(TEST_USER);
+      }
+
+      ProcessInstance processInstance = processRuntime.delete(ProcessPayloadBuilder
+          .delete()
+          .withProcessInstanceId(instanceID)
+          .build()
+      );
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          processInstance.getName());
+    }
+    catch(Exception e) {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "删除流程实例失败",
           e.toString());
     }
   }
