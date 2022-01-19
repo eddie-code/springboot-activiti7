@@ -44,7 +44,7 @@ public class ProcessInstanceController {
 
   private final SecurityUtil securityUtil;
 
-  private final String TEST_USER = "bajie";
+  private static final String TEST_USER = "bajie";
 
   /**
    * 查询流程实例:
