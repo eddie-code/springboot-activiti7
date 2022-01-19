@@ -180,4 +180,37 @@ public class ProcessInstanceController {
           e.toString());
     }
   }
+
+  /**
+   * 激活流程实例
+   * @param instanceID
+   * @return
+   */
+  @GetMapping(value = "/resumeInstance")
+  public AjaxResponse resumeInstance(@RequestParam("instanceID") String instanceID) {
+
+    try {
+      if (GlobalConfig.Test) {
+        securityUtil.logInAs(TEST_USER);
+      }
+
+      ProcessInstance processInstance = processRuntime.resume(ProcessPayloadBuilder
+          .resume()
+          .withProcessInstanceId(instanceID)
+          .build()
+      );
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          processInstance.getName());
+    }
+    catch(Exception e)
+    {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "激活流程实例失败",
+          e.toString());
+    }
+  }
+
 }
