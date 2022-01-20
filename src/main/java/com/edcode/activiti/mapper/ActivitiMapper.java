@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,5 +34,14 @@ public interface ActivitiMapper {
       "     #{formData.Control_VALUE_,jdbcType=VARCHAR})" +
       "    </foreach>  </script>")
   int insertFormData(@Param("maps") List<HashMap<String, Object>> maps);
+
+  /**
+   * 读取表单
+   * @param PROC_INST_ID
+   * @return
+   * @sql SELECT Control_ID_,Control_VALUE_ from formdata where PROC_INST_ID_ = ?
+   */
+  @Select("SELECT Control_ID_,Control_VALUE_ from formdata where PROC_INST_ID_ = #{PROC_INST_ID}")
+  List<HashMap<String,Object>> selectFormData(@Param("PROC_INST_ID") String PROC_INST_ID);
 
 }

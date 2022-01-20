@@ -144,20 +144,35 @@ public class TaskController {
         securityUtil.logInAs("bajie");
       }
       Task task = taskRuntime.task(taskID);
-      //本实例所有保存的表单数据HashMap，为了快速读取控件以前环节存储的值
-      HashMap<String, String> controlistMap = new HashMap<>();
-      // 通过任务id，可以拿到流程定义ID
+
+      //-----------------------构建表单控件历史数据字典-----------------------
+      // 本实例所有保存的表单数据HashMap，为了快速读取控件以前环节存储的值
+      HashMap<String, String> controlistMap = new HashMap<>(16);
+      // 本实例所有保存的表单数据
+      List<HashMap<String, Object>> tempControlList = mapper.selectFormData(task.getProcessInstanceId());
+      for (HashMap<String, Object> ls : tempControlList) {
+        controlistMap.put(ls.get("Control_ID_").toString(), ls.get("Control_VALUE_").toString());
+      }
+      /*
+        FormProperty_0ueitp2-_!类型-_!名称-_!默认值-_!是否参数
+        例子：
+        FormProperty_0lovri0-_!string-_!姓名-_!请输入姓名-_!f
+        FormProperty_1iu6onu-_!int-_!年龄-_!请输入年龄-_!s
+
+        默认值：无、字符常量、FormProperty_开头定义过的控件ID
+        是否参数：f为不是参数，s是字符，t是时间(不需要int，因为这里int等价于string)
+        注：类型是可以获取到的，但是为了统一配置原则，都配置到
+       */
+      // 注意!!!!!!!!:表单Key必须要任务编号一模一样，因为参数需要任务key，但是无法获取，只能获取表单key“task.getFormKey()”当做任务key
       UserTask userTask = (UserTask) repositoryService.getBpmnModel(task.getProcessDefinitionId())
           // 在 v6 版本是可以获取到任务的key, 现在 v7 版本反而获取不到，不过可以使用另外一种方式，就是使用表单的key
           .getFlowElement(task.getFormKey());
-
       if (userTask == null) {
         return AjaxResponse.AjaxData(
             GlobalConfig.ResponseCode.SUCCESS.getCode(),
             GlobalConfig.ResponseCode.SUCCESS.getDesc(),
             "无表单");
       }
-
       List<FormProperty> formProperties = userTask.getFormProperties();
       List<HashMap<String, Object>> listMap = new ArrayList<>();
       for (FormProperty fp : formProperties) {
@@ -169,11 +184,21 @@ public class TaskController {
         hashMap.put("controlType", splitFP[1]);
         // 控制标签
         hashMap.put("controlLiable", splitFP[2]);
-        // 默认值
-        hashMap.put("controlDevalue", splitFP[3]);
         // 参数
         hashMap.put("controlParam", splitFP[4]);
-
+        //默认值，如果是表单控件ID
+        if (splitFP[3].startsWith("FormProperty_")) {
+          //控件ID存在
+          if (controlistMap.containsKey(splitFP[3])) {
+            hashMap.put("controlDefValue", controlistMap.get(splitFP[3]));
+          } else {
+            //控件ID不存在
+            hashMap.put("controlDefValue", "读取失败，检查" + splitFP[0] + "配置");
+          }
+        } else {
+          //默认值如果不是表单控件ID则写入默认值
+          hashMap.put("controlDefValue", splitFP[3]);
+        }
         listMap.add(hashMap);
       }
 
