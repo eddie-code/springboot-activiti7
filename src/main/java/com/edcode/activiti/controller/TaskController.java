@@ -186,4 +186,47 @@ public class TaskController {
     }
   }
 
+  /**
+   * 保存表单
+   * @param taskID 任务ID
+   * @param formData 表单数据
+   * @return
+   */
+  @PostMapping(value = "/formDataSave")
+  public AjaxResponse formDataSave(
+      @RequestParam("taskID") String taskID,
+      @RequestParam("formData") String formData) {
+    try {
+      if (GlobalConfig.Test) {
+        securityUtil.logInAs("bajie");
+      }
+      Task task = taskRuntime.task(taskID);
+
+      List<HashMap<String, Object>> listMap = new ArrayList<>();
+      //前端传来的字符串，拆分成每个控件
+      String[] formDataList = formData.split("!_!");
+      for (String controlItem : formDataList) {
+        String[] formDataItem = controlItem.split("-_!");
+        HashMap<String, Object> hashMap = new HashMap<>(16);
+        hashMap.put("PROC_DEF_ID_", task.getProcessDefinitionId());
+        hashMap.put("PROC_INST_ID_", task.getProcessInstanceId());
+        hashMap.put("FORM_KEY_", task.getFormKey());
+        // 从 formData 获取
+        hashMap.put("Control_ID_", formDataItem[0]);
+        hashMap.put("Control_VALUE_", formDataItem[1]);
+        listMap.add(hashMap);
+      }
+
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          listMap);
+    } catch (Exception e) {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "提交任务表单失败",
+          e.toString());
+    }
+  }
+
 }
