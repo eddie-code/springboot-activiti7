@@ -56,7 +56,7 @@ public class TaskController {
   public AjaxResponse getTasks() {
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs(TEST_USER);
+        securityUtil.logInAs("bajie");
       }
       Page<Task> tasks = taskRuntime.tasks(
           Pageable.of(0, 100)
@@ -209,6 +209,10 @@ public class TaskController {
       }
       Task task = taskRuntime.task(taskID);
 
+      HashMap<String, Object> variables = new HashMap<>(16);
+      //没有任何参数
+      boolean hasVariables = false;
+
       List<HashMap<String, Object>> listMap = new ArrayList<>();
       //前端传来的字符串，拆分成每个控件
       String[] formDataList = formData.split("!_!");
@@ -223,10 +227,45 @@ public class TaskController {
         hashMap.put("Control_VALUE_", formDataItem[1]);
 //        hashMap.put("Control_PARAM_", formDataItem[2]);
         listMap.add(hashMap);
+
+        // 构建参数集合
+        // 是否参数：f为不是参数，s是字符，t是时间，b是布尔值（不需要int，因为这里 int 等价于 string）
+        switch (formDataItem[2]) {
+          case "f":
+            System.out.println("控件值不作为参数");
+            break;
+          case "s":
+            // key=控件ID, value=控件的值
+            variables.put(formDataItem[0], formDataItem[1]);
+            hasVariables = true;
+            break;
+          case "t":
+            SimpleDateFormat timeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            variables.put(formDataItem[0], timeFormat.parse(formDataItem[2]));
+            hasVariables = true;
+            break;
+          case "b":
+            variables.put(formDataItem[0], BooleanUtils.toBoolean(formDataItem[2]));
+            hasVariables = true;
+            break;
+          default:
+            System.out.println("控件参数类型配置错误：" + formDataItem[0] + "的参数类型不存在，" + formDataItem[2]);
+        }
+      }
+
+      if (hasVariables) {
+        //带参数完成任务
+        taskRuntime.complete(TaskPayloadBuilder.complete().withTaskId(taskID)
+            .withVariables(variables)
+            .build());
+      } else {
+        // 没有任何参数
+        taskRuntime.complete(TaskPayloadBuilder.complete().withTaskId(taskID)
+            .build());
       }
 
       //写入数据库
-      int result = mapper.insertFormData(listMap);
+      mapper.insertFormData(listMap);
 
       return AjaxResponse.AjaxData(
           GlobalConfig.ResponseCode.SUCCESS.getCode(),
