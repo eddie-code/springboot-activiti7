@@ -128,4 +128,62 @@ public class TaskController {
     }
   }
 
+
+  /**
+   * 渲染表单
+   * @param taskID
+   * @return
+   */
+  @GetMapping(value = "/formDataShow")
+  public AjaxResponse formDataShow(@RequestParam("taskID") String taskID) {
+    try {
+      if (GlobalConfig.Test) {
+        securityUtil.logInAs("bajie");
+      }
+      Task task = taskRuntime.task(taskID);
+      //本实例所有保存的表单数据HashMap，为了快速读取控件以前环节存储的值
+      HashMap<String, String> controlistMap = new HashMap<>();
+      // 通过任务id，可以拿到流程定义ID
+      UserTask userTask =  (UserTask) repositoryService.getBpmnModel(task.getProcessDefinitionId())
+          // 在 v6 版本是可以获取到任务的key, 现在 v7 版本反而获取不到，不过可以使用另外一种方式，就是使用表单的key
+          .getFlowElement(task.getFormKey());
+
+      if (userTask == null) {
+        return AjaxResponse.AjaxData(
+            GlobalConfig.ResponseCode.SUCCESS.getCode(),
+            GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+            "无表单");
+      }
+
+      List<FormProperty> formProperties = userTask.getFormProperties();
+      List<HashMap<String, Object>> listMap = new ArrayList<>();
+      for (FormProperty fp : formProperties) {
+        // FormProperty_0rg77oq-_!string-_!姓名-_!请输入姓名-_!f
+        String[] splitFP = fp.getId().split("-_!");
+        HashMap<String, Object> hashMap = new HashMap<>(16);
+        hashMap.put("id", splitFP[0]);
+        // 控制类型
+        hashMap.put("controlType", splitFP[1]);
+        // 控制标签
+        hashMap.put("controlLiable", splitFP[2]);
+        // 默认值
+        hashMap.put("controlDevalue", splitFP[3]);
+        // 参数
+        hashMap.put("controlParam", splitFP[4]);
+
+        listMap.add(hashMap);
+      }
+
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.SUCCESS.getCode(),
+          GlobalConfig.ResponseCode.SUCCESS.getDesc(),
+          listMap);
+    } catch (Exception e) {
+      return AjaxResponse.AjaxData(
+          GlobalConfig.ResponseCode.ERROR.getCode(),
+          "失败",
+          e.toString());
+    }
+  }
+
 }
