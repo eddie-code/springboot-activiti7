@@ -32,7 +32,8 @@ spring:
     check-process-definitions: false
 
 # 开启Activiti的SQL日志
-#logging:
-#  level:
+logging:
+  level:
 #    org.activiti.engine.impl.persistence.entity: debug
+    com.edcode.activiti.mapper: debug
 

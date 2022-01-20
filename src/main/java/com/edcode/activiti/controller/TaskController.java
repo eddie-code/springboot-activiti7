@@ -49,6 +49,7 @@ public class TaskController {
 
   /**
    * 获取我的代办任务
+   *
    * @return AjaxResponse
    */
   @GetMapping(value = "/getTasks")
@@ -93,6 +94,7 @@ public class TaskController {
 
   /**
    * 完成待办任务
+   *
    * @param taskID
    * @return
    */
@@ -123,7 +125,7 @@ public class TaskController {
     } catch (Exception e) {
       return AjaxResponse.AjaxData(
           GlobalConfig.ResponseCode.ERROR.getCode(),
-          "完成任务 {"+taskID+"} 失败",
+          "完成任务 {" + taskID + "} 失败",
           e.toString());
     }
   }
@@ -131,6 +133,7 @@ public class TaskController {
 
   /**
    * 渲染表单
+   *
    * @param taskID
    * @return
    */
@@ -144,7 +147,7 @@ public class TaskController {
       //本实例所有保存的表单数据HashMap，为了快速读取控件以前环节存储的值
       HashMap<String, String> controlistMap = new HashMap<>();
       // 通过任务id，可以拿到流程定义ID
-      UserTask userTask =  (UserTask) repositoryService.getBpmnModel(task.getProcessDefinitionId())
+      UserTask userTask = (UserTask) repositoryService.getBpmnModel(task.getProcessDefinitionId())
           // 在 v6 版本是可以获取到任务的key, 现在 v7 版本反而获取不到，不过可以使用另外一种方式，就是使用表单的key
           .getFlowElement(task.getFormKey());
 
@@ -188,9 +191,13 @@ public class TaskController {
 
   /**
    * 保存表单
-   * @param taskID 任务ID
+   *
+   * @param taskID   任务ID
    * @param formData 表单数据
-   * @return
+   * @return AjaxResponse
+   * <p>
+   * formData:控件id-_!控件值-_!是否参数!_!控件id-_!控件值-_!是否参数 <p>
+   * FormProperty_0rg77oq-_!不是参数-_!f!_!FormProperty_02og61s-_!我是参数-_!s
    */
   @PostMapping(value = "/formDataSave")
   public AjaxResponse formDataSave(
@@ -214,8 +221,12 @@ public class TaskController {
         // 从 formData 获取
         hashMap.put("Control_ID_", formDataItem[0]);
         hashMap.put("Control_VALUE_", formDataItem[1]);
+//        hashMap.put("Control_PARAM_", formDataItem[2]);
         listMap.add(hashMap);
       }
+
+      //写入数据库
+      int result = mapper.insertFormData(listMap);
 
       return AjaxResponse.AjaxData(
           GlobalConfig.ResponseCode.SUCCESS.getCode(),
