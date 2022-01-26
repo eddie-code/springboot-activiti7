@@ -5,6 +5,7 @@ import com.edcode.activiti.entity.UserInfoBean;
 import com.edcode.activiti.util.AjaxResponse;
 import com.edcode.activiti.util.GlobalConfig;
 import com.edcode.activiti.util.GlobalConfig.ResponseCode;
+import com.edcode.activiti.util.TestUserConstant;
 import java.util.Comparator;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,7 @@ public class ProcessInstanceController {
 
   private final SecurityUtil securityUtil;
 
-  private static final String TEST_USER = "bajie";
+
 
   /**
    * 查询流程实例:
@@ -57,7 +58,7 @@ public class ProcessInstanceController {
     try {
 
       if (GlobalConfig.Test) {
-        securityUtil.logInAs(TEST_USER);
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
 
       Page<ProcessInstance> processInstances = processRuntime.processInstances(
@@ -118,7 +119,7 @@ public class ProcessInstanceController {
     try {
 
       if (GlobalConfig.Test) {
-        securityUtil.logInAs(TEST_USER);
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }else{
         securityUtil.logInAs(SecurityContextHolder.getContext().getAuthentication().getName());
       }
@@ -159,7 +160,7 @@ public class ProcessInstanceController {
 
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs(TEST_USER);
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
 
       ProcessInstance processInstance = processRuntime.suspend(ProcessPayloadBuilder
@@ -190,7 +191,7 @@ public class ProcessInstanceController {
 
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs(TEST_USER);
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
 
       ProcessInstance processInstance = processRuntime.resume(ProcessPayloadBuilder
@@ -220,7 +221,7 @@ public class ProcessInstanceController {
   public AjaxResponse deleteInstance(@RequestParam("instanceID") String instanceID) {
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs(TEST_USER);
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
 
       ProcessInstance processInstance = processRuntime.delete(ProcessPayloadBuilder
@@ -250,7 +251,7 @@ public class ProcessInstanceController {
   public AjaxResponse variables(@RequestParam("instanceID") String instanceID) {
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs(TEST_USER);
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
       List<VariableInstance> variableInstance = processRuntime.variables(ProcessPayloadBuilder
           .variables()

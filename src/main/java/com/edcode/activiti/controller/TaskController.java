@@ -4,6 +4,7 @@ import com.edcode.activiti.SecurityUtil;
 import com.edcode.activiti.mapper.ActivitiMapper;
 import com.edcode.activiti.util.AjaxResponse;
 import com.edcode.activiti.util.GlobalConfig;
+import com.edcode.activiti.util.TestUserConstant;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.activiti.api.process.model.ProcessInstance;
@@ -45,8 +46,6 @@ public class TaskController {
 
   private final ActivitiMapper mapper;
 
-  private static final String TEST_USER = "wukong";
-
   /**
    * 获取我的代办任务
    *
@@ -56,7 +55,7 @@ public class TaskController {
   public AjaxResponse getTasks() {
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs("bajie");
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
       Page<Task> tasks = taskRuntime.tasks(
           Pageable.of(0, 100)
@@ -102,7 +101,7 @@ public class TaskController {
   public AjaxResponse completeTask(@RequestParam("taskID") String taskID) {
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs(TEST_USER);
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
 
       Task task = taskRuntime.task(taskID);
@@ -141,7 +140,7 @@ public class TaskController {
   public AjaxResponse formDataShow(@RequestParam("taskID") String taskID) {
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs("bajie");
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
       Task task = taskRuntime.task(taskID);
 
@@ -230,7 +229,7 @@ public class TaskController {
       @RequestParam("formData") String formData) {
     try {
       if (GlobalConfig.Test) {
-        securityUtil.logInAs("bajie");
+        securityUtil.logInAs(TestUserConstant.TEST_USER);
       }
       Task task = taskRuntime.task(taskID);
 

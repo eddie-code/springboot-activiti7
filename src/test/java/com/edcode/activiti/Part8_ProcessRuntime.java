@@ -1,5 +1,6 @@
 package com.edcode.activiti;
 
+import com.edcode.activiti.util.TestUserConstant;
 import org.activiti.api.model.shared.model.VariableInstance;
 import org.activiti.api.process.model.ProcessInstance;
 import org.activiti.api.process.model.builders.ProcessPayloadBuilder;
@@ -23,13 +24,15 @@ public class Part8_ProcessRuntime {
   @Autowired
   private SecurityUtil securityUtil;
 
+
+
   /**
    * 获取流程实例
    */
   @Test
   public void getProcessInstance() {
     // 1. 登录
-    securityUtil.logInAs("bajie");
+    securityUtil.logInAs(TestUserConstant.TEST_USER);
     // 2. 分页查询
     Page<ProcessInstance> processInstancePage = processRuntime.processInstances(Pageable.of(0, 100));
     System.out.println("流程实例数量：" + processInstancePage.getTotalItems());
@@ -49,7 +52,7 @@ public class Part8_ProcessRuntime {
    */
   @Test
   public void startProcessInstance() {
-    securityUtil.logInAs("bajie");
+    securityUtil.logInAs(TestUserConstant.TEST_USER);
     ProcessInstance processInstance = processRuntime.start(ProcessPayloadBuilder
         .start()
         .withProcessDefinitionKey("myProcess_ProcessRuntime")
@@ -63,7 +66,7 @@ public class Part8_ProcessRuntime {
    */
   @Test
   public void delProcessInstance() {
-    securityUtil.logInAs("bajie");
+    securityUtil.logInAs(TestUserConstant.TEST_USER);
     ProcessInstance processInstance = processRuntime.delete(ProcessPayloadBuilder
         .delete()
         .withProcessInstanceId("3f28b96a-775d-11ec-ac61-5e879ca31830")
@@ -76,7 +79,7 @@ public class Part8_ProcessRuntime {
    */
   @Test
   public void suspendProcessInstance() {
-    securityUtil.logInAs("bajie");
+    securityUtil.logInAs(TestUserConstant.TEST_USER);
     ProcessInstance processInstance = processRuntime.suspend(ProcessPayloadBuilder
         .suspend()
         .withProcessInstanceId("5a5eb790-7438-11ec-b645-5e879ca31830")
@@ -89,7 +92,7 @@ public class Part8_ProcessRuntime {
    */
   @Test
   public void resumeProcessInstance() {
-    securityUtil.logInAs("bajie");
+    securityUtil.logInAs(TestUserConstant.TEST_USER);
     ProcessInstance processInstance = processRuntime.resume(ProcessPayloadBuilder
         .resume()
         .withProcessInstanceId("5a5eb790-7438-11ec-b645-5e879ca31830")
@@ -104,7 +107,7 @@ public class Part8_ProcessRuntime {
    */
   @Test
   public void getVariables() {
-    securityUtil.logInAs("bajie");
+    securityUtil.logInAs(TestUserConstant.TEST_USER);
     processRuntime
         .variables(ProcessPayloadBuilder.variables()
             .withProcessInstanceId("5d8dd859-7477-11ec-907c-5e879ca31830")
