@@ -204,4 +204,10 @@ $(function() {
     // alert("1111")
   })
 
+  // 部署BPMN
+  $("#uploadFile").on("change", function () {
+    // alert("1111")
+    tools.uploadFile(bpmnModeler);
+  })
+
 });

@@ -53,6 +53,32 @@ const tools = {
     });
   },
 
+  /**
+   * 上传bpmn
+   * @param {object} bpmnModeler bpmn对象
+   * @param {object} container 容器对象
+   */
+  upload(bpmnModeler, container) {
+    var FileUpload = document.myForm.uploadFile.files[0];
+    var fm = new FormData();
+    fm.append('processFile', FileUpload);
+    $.ajax({
+      url: publicurl+'processDefinition/upload',
+      type: 'POST',
+      data: fm,
+      async: false,
+      contentType: false, //禁止设置请求类型
+      processData: false, //禁止jquery对DAta数据的处理,默认会处理
+      success: function (result) {
+        var url = publicurl+'bpmn/' + result.obj
+        tools.openFromUrl(bpmnModeler, container, url)
+      },
+      error: function (err) {
+        console.log(err)
+      }
+    });
+  },
+
   setEncoded(link, name, data) {
     const encodedData = encodeURIComponent(data);
 
@@ -64,25 +90,6 @@ const tools = {
     } else {
       link.removeClass('active');
     }
-  },
-
-  /**
-   * 隐藏弹出框
-   * @param id
-   */
-  syhide(id) {
-    if (typeof id == "undefined") {
-      var dom = $(".sy-alert")
-    } else {
-      var dom = $("#" + id)
-    }
-    var name = dom.attr("sy-leave");
-    dom.addClass(name);
-    $(".sy-mask").fadeOut(300);
-    setTimeout(function () {
-      dom.hide();
-      dom.removeClass(name);
-    }, 300)
   },
 }
 export default tools

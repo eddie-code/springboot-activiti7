@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:activiti="http://activiti.org/bpmn" id="sample-diagram" targetNamespace="http://bpmn.io/schema/bpmn" xsi:schemaLocation="http://www.omg.org/spec/BPMN/20100524/MODEL BPMN20.xsd">
+  <bpmn2:process id="Process_1_upload" name="upload BPMN&#10;" isExecutable="true">
+    <bpmn2:startEvent id="StartEvent_1">
+      <bpmn2:outgoing>Flow_15i589e</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:userTask id="Activity_1t05w5o" name="八戒上传的BPMN&#10;" activiti:assignee="bajie">
+      <bpmn2:incoming>Flow_15i589e</bpmn2:incoming>
+      <bpmn2:outgoing>Flow_10ghneh</bpmn2:outgoing>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="Flow_15i589e" sourceRef="StartEvent_1" targetRef="Activity_1t05w5o" />
+    <bpmn2:endEvent id="Event_09t9jv0">
+      <bpmn2:incoming>Flow_10ghneh</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="Flow_10ghneh" sourceRef="Activity_1t05w5o" targetRef="Event_09t9jv0" />
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_1_upload">
+      <bpmndi:BPMNEdge id="Flow_15i589e_di" bpmnElement="Flow_15i589e">
+        <di:waypoint x="448" y="258" />
+        <di:waypoint x="500" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10ghneh_di" bpmnElement="Flow_10ghneh">
+        <di:waypoint x="600" y="258" />
+        <di:waypoint x="652" y="258" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="412" y="240" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t05w5o_di" bpmnElement="Activity_1t05w5o">
+        <dc:Bounds x="500" y="218" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_09t9jv0_di" bpmnElement="Event_09t9jv0">
+        <dc:Bounds x="652" y="240" width="36" height="36" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
