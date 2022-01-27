@@ -10,7 +10,7 @@ import {
 } from 'min-dash';
 
 import diagramXML from '../resources/newDiagram.bpmn';
-
+import tools from "../resources/tools";
 
 var container = $('#js-drop-zone');
 
@@ -191,4 +191,11 @@ $(function() {
   }, 500);
 
   bpmnModeler.on('commandStack.changed', exportArtifacts);
+
+  // 导出BPMN
+  $("#downloadBPMN").on("click", function () {
+    tools.download(bpmnModeler);
+    // alert("1111")
+  })
+
 });
