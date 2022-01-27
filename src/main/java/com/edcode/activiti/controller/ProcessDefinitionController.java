@@ -131,8 +131,9 @@ public class ProcessDefinitionController {
    */
   @PostMapping(value = "/addDeploymentByString")
   public AjaxResponse addDeploymentByString(
-      @RequestParam("stringBPMN") String stringBPMN,
-      @RequestParam("deploymentName")String deploymentName) {
+      @RequestParam("stringBPMN") String stringBPMN
+//      ,@RequestParam("deploymentName")String deploymentName
+  ){
     try {
       Deployment deployment = repositoryService.createDeployment()
           .addString("CreateWithBPMNJS.bpmn",stringBPMN)

@@ -198,4 +198,10 @@ $(function() {
     // alert("1111")
   })
 
+  // 部署BPMN
+  $("#saveBPMN").on("click", function () {
+    tools.saveBpmn(bpmnModeler);
+    // alert("1111")
+  })
+
 });

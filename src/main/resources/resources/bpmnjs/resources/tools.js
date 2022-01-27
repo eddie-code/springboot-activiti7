@@ -21,6 +21,38 @@ const tools = {
     // alert("2222")
   },
 
+  /**
+   * 保存bpmn对象
+   * @param {object} bpmnModeler bpmn对象
+   */
+  saveBpmn(bpmnModeler) {
+    bpmnModeler.saveXML({format: true}, function (err, xml) {
+      if (err) {
+        return console.error('could not save bpmn', err);
+      }
+      console.log(xml)
+      var param = {
+        "stringBPMN": xml
+      }
+      $.ajax({
+        url: publicurl + 'processDefinition/addDeploymentByString',
+        type: 'POST',
+        dataType: "json",
+        data: param,
+        success: function (result) {
+          if (result.status === '0') {
+            alert('BPMN部署成功');
+          } else {
+            alert(result.msg);
+          }
+        },
+        error: function (err) {
+          alert(err);
+        }
+      });
+    });
+  },
+
   setEncoded(link, name, data) {
     const encodedData = encodeURIComponent(data);
 
@@ -32,7 +64,25 @@ const tools = {
     } else {
       link.removeClass('active');
     }
-  }
+  },
 
+  /**
+   * 隐藏弹出框
+   * @param id
+   */
+  syhide(id) {
+    if (typeof id == "undefined") {
+      var dom = $(".sy-alert")
+    } else {
+      var dom = $("#" + id)
+    }
+    var name = dom.attr("sy-leave");
+    dom.addClass(name);
+    $(".sy-mask").fadeOut(300);
+    setTimeout(function () {
+      dom.hide();
+      dom.removeClass(name);
+    }, 300)
+  },
 }
 export default tools
