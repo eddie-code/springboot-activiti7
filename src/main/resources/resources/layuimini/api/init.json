@@ -16,6 +16,12 @@
       "target": "_self",
       "child": [
         {
+          "title": "流程部署列表",
+          "href": "page/ProcessDeployments.html",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        },
+        {
           "title": "主页模板",
           "href": "",
           "icon": "fa fa-home",
