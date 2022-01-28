@@ -262,7 +262,12 @@ public class ProcessDefinitionController {
       // 后缀名
       String suffixName = fileName.substring(fileName.lastIndexOf("."));
       // 存储上传的 bpmn 文件路径
-      String filePath = "D:/Develop/Mine/IdeaProjects/springboot-activiti7/src/main/resources/resources/bpmn/";
+      String filePath = GlobalConfig.BPMN_PathMapping;
+
+      // 修改路径格式
+      filePath = filePath.replace("\\","/");
+      filePath = filePath.replace("file:","");
+
       // 新的文件名称
       fileName = UUID.randomUUID() + suffixName;
       // 如果配置文件指定目录,就可以直接这样写(不指定路径的,就需要自己填充保存路径)

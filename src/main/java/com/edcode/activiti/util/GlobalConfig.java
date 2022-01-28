@@ -14,6 +14,15 @@ public class GlobalConfig {
    * 开发阶段 / 测试阶段
    */
   public static final Boolean Test = true;
+  /**
+   * windows
+   */
+  public static final String BPMN_PathMapping = "file:D:\\Develop\\Mine\\IdeaProjects\\springboot-activiti7\\src\\main\\resources\\resources\\bpmn";
+
+  /**
+   * linux
+   */
+//  public static final String BPMN_PathMapping = "/opt/activiti";
 
   @Getter
   @AllArgsConstructor
