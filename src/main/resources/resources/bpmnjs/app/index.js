@@ -204,10 +204,10 @@ $(function() {
     // alert("1111")
   })
 
-  // 部署BPMN
+  // 导入BPMN，浏览器查看
   $("#uploadFile").on("change", function () {
     // alert("1111")
-    tools.uploadFile(bpmnModeler);
+    tools.uploadBPMN(bpmnModeler);
   })
 
 });

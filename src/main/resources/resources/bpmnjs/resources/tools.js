@@ -31,9 +31,9 @@ const tools = {
         return console.error('could not save bpmn', err);
       }
       console.log(xml)
-      var param = {
+      const param = {
         "stringBPMN": xml
-      }
+      };
       $.ajax({
         url: publicurl + 'processDefinition/addDeploymentByString',
         type: 'POST',
@@ -56,22 +56,22 @@ const tools = {
   /**
    * 上传bpmn
    * @param {object} bpmnModeler bpmn对象
-   * @param {object} container 容器对象
    */
-  upload(bpmnModeler, container) {
-    var FileUpload = document.myForm.uploadFile.files[0];
-    var fm = new FormData();
+  uploadBPMN(bpmnModeler) {
+    const FileUpload = document.myForm.uploadFile.files[0];
+    const fm = new FormData();
     fm.append('processFile', FileUpload);
+    console.log("2222")
     $.ajax({
-      url: publicurl+'processDefinition/upload',
+      url: publicurl + 'processDefinition/upload',
       type: 'POST',
       data: fm,
       async: false,
       contentType: false, //禁止设置请求类型
       processData: false, //禁止jquery对DAta数据的处理,默认会处理
       success: function (result) {
-        var url = publicurl+'bpmn/' + result.obj
-        tools.openFromUrl(bpmnModeler, container, url)
+        const url = publicurl + 'bpmn/' + result.obj; //路径+文件名
+        tools.openFromUrl(bpmnModeler, url)
       },
       error: function (err) {
         console.log(err)
@@ -91,5 +91,17 @@ const tools = {
       link.removeClass('active');
     }
   },
+  openFromUrl(bpmnModeler, url) {
+    $.ajax(url, {
+      dataType: 'text'
+    }).done(async function (xml) {
+      try {
+        await bpmnModeler.importXML(xml);
+      } catch (e) {
+        console.error(e);
+      }
+    })
+  },
+
 }
 export default tools

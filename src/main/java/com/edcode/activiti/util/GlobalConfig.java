@@ -17,7 +17,7 @@ public class GlobalConfig {
   /**
    * windows
    */
-  public static final String BPMN_PathMapping = "file:D:\\Develop\\Mine\\IdeaProjects\\springboot-activiti7\\src\\main\\resources\\resources\\bpmn";
+  public static final String BPMN_PathMapping = "file:D:\\Develop\\Mine\\IdeaProjects\\springboot-activiti7\\src\\main\\resources\\resources\\bpmn\\";
 
   /**
    * linux

@@ -260,6 +260,7 @@ public class ProcessDefinitionController {
       // 文件名
       String fileName = multipartFile.getOriginalFilename();
       // 后缀名
+      assert fileName != null;
       String suffixName = fileName.substring(fileName.lastIndexOf("."));
       // 存储上传的 bpmn 文件路径
       String filePath = GlobalConfig.BPMN_PathMapping;
