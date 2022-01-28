@@ -67,6 +67,7 @@
 <script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
 <script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
 <script src="../lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
+<script src="../js/lay-config.js" charset="utf-8"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
@@ -98,9 +99,35 @@
                 layer.msg('验证码不能为空');
                 return false;
             }
-            layer.msg('登录成功', function () {
-                window.location = '../index.html';
+            // layer.msg('登录成功', function () {
+            //     window.location = '../index.html';
+            // });
+
+            const fd = new FormData();
+            fd.append('username', data.username)
+            fd.append('password', data.password)
+            $.ajax({
+                cache: true,
+                type: "post",
+                url: '' + publicurl + 'login',
+                async: false,
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    layer.msg('登录成功', function () {
+                        localStorage.setItem('userName', res.obj);
+                        window.location = '../index.html'
+                    });
+                },
+                error: function (err) {
+                    layer.alert(err.responseJSON.obj, {
+                        icon: 2,
+                        title: "提示"
+                    });
+                }
             });
+
             return false;
         });
     });

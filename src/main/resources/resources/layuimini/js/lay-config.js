@@ -5,6 +5,12 @@
  * version:2.0.4
  */
 
+const proHost = window.location.protocol + "//" + window.location.host;
+const href = window.location.href.split("layuimini")[0];
+const key = href.split(window.location.host)[1];
+const publicurl = proHost + key;
+var userName = localStorage.getItem('userName')
+
 window.rootPath = (function (src) {
     src = document.scripts[document.scripts.length - 1].src;
     return src.substring(0, src.lastIndexOf("/") + 1);
