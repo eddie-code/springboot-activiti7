@@ -2,6 +2,8 @@ server:
   port: 8080
   servlet:
     context-path: /
+    session:
+      timeout: 9000
 spring:
   datasource:
     # 数据源
@@ -30,6 +32,13 @@ spring:
     db-history-used: true
     # 自动部署验证设置:true-开启（默认）、false-关闭
     check-process-definitions: false
+#---
+#spring:
+#  datasource:
+#    username: ${DM_USERNAME:SYSDBA}
+#    password: ${DM_PASSWORD:SYSDBA}
+#    jdbc-url: jdbc:dm://${DM_HOST:127.0.0.1}:${DM_PORT:5236}/${DM_DATABASE:DAMENG}
+#    driver-class-name: dm.jdbc.driver.DmDriver
 
 # 开启Activiti的SQL日志
 logging:

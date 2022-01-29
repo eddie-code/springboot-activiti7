@@ -9,27 +9,27 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @author eddie.lee
  * @description
  */
-//@SpringBootApplication
-//public class ActivityApplication {
-//
-//    public static void main(String[] args) {
-//        SpringApplication.run(ActivityApplication.class, args);
-//    }
-//
-//}
-
-@SpringBootApplication(scanBasePackages = {"com.edcode.activiti"})
-public class ActivityApplication extends SpringBootServletInitializer {
+@SpringBootApplication
+public class ActivityApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ActivityApplication.class, args);
     }
 
-    /**
-     * 打 war 包方式
-     */
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(ActivityApplication.class);
-    }
 }
+
+//@SpringBootApplication(scanBasePackages = {"com.edcode.activiti"})
+//public class ActivityApplication extends SpringBootServletInitializer {
+//
+//    public static void main(String[] args) {
+//        SpringApplication.run(ActivityApplication.class, args);
+//    }
+//
+//    /**
+//     * 打 war 包方式
+//     */
+//    @Override
+//    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+//        return builder.sources(ActivityApplication.class);
+//    }
+//}

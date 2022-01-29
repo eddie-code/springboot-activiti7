@@ -8,7 +8,7 @@
     <artifactId>springboot-activiti7</artifactId>
     <version>1.0-SNAPSHOT</version>
 <!--    <packaging>jar</packaging>-->
-    <packaging>war</packaging>
+<!--    <packaging>war</packaging>-->
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -80,6 +80,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>true</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.edcode.activiti</groupId>
+            <artifactId>activiti-dameng</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
